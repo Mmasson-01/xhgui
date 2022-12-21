@@ -184,25 +184,48 @@ class PdoRepository
 
     public function initSchema(): void
     {
-        $this->pdo->exec(sprintf('
-            CREATE TABLE IF NOT EXISTS %s (
-              "id"               CHAR(24) PRIMARY KEY,
-              "profile"          TEXT           NOT NULL,
-              "url"              TEXT           NULL,
-              "SERVER"           TEXT           NULL,
-              "GET"              TEXT           NULL,
-              "ENV"              TEXT           NULL,
-              "simple_url"       TEXT           NULL,
-              "request_ts"       INTEGER        NOT NULL,
-              "request_ts_micro" NUMERIC(15, 4) NOT NULL,
-              "request_date"     DATE           NOT NULL,
-              "main_wt"          INTEGER        NOT NULL,
-              "main_ct"          INTEGER        NOT NULL,
-              "main_cpu"         INTEGER        NOT NULL,
-              "main_mu"          INTEGER        NOT NULL,
-              "main_pmu"         INTEGER        NOT NULL
-            )
-        ', $this->table));
+        if ($this->driverName == 'mysql')
+        {
+            $this->pdo->exec(sprintf('
+                CREATE TABLE IF NOT EXISTS %s (
+                "id"               CHAR(24) PRIMARY KEY,
+                "profile"          LONGTEXT       NOT NULL,
+                "url"              TEXT           NULL,
+                "SERVER"           TEXT           NULL,
+                "GET"              TEXT           NULL,
+                "ENV"              TEXT           NULL,
+                "simple_url"       TEXT           NULL,
+                "request_ts"       INTEGER        NOT NULL,
+                "request_ts_micro" NUMERIC(15, 4) NOT NULL,
+                "request_date"     DATE           NOT NULL,
+                "main_wt"          INTEGER        NOT NULL,
+                "main_ct"          INTEGER        NOT NULL,
+                "main_cpu"         INTEGER        NOT NULL,
+                "main_mu"          INTEGER        NOT NULL,
+                "main_pmu"         INTEGER        NOT NULL
+                )
+                ', $this->table));
+        } else {
+            $this->pdo->exec(sprintf('
+                CREATE TABLE IF NOT EXISTS %s (
+                "id"               CHAR(24) PRIMARY KEY,
+                "profile"          TEXT           NOT NULL,
+                "url"              TEXT           NULL,
+                "SERVER"           TEXT           NULL,
+                "GET"              TEXT           NULL,
+                "ENV"              TEXT           NULL,
+                "simple_url"       TEXT           NULL,
+                "request_ts"       INTEGER        NOT NULL,
+                "request_ts_micro" NUMERIC(15, 4) NOT NULL,
+                "request_date"     DATE           NOT NULL,
+                "main_wt"          INTEGER        NOT NULL,
+                "main_ct"          INTEGER        NOT NULL,
+                "main_cpu"         INTEGER        NOT NULL,
+                "main_mu"          INTEGER        NOT NULL,
+                "main_pmu"         INTEGER        NOT NULL
+                )
+                ', $this->table));
+        }
         $this->pdo->exec(sprintf('
             CREATE TABLE IF NOT EXISTS %s (
               "id"               CHAR(24) PRIMARY KEY,
